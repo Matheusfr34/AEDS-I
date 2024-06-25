@@ -1,0 +1,9 @@
+// Exemplo 1: p++
+p++ aponta para o próximo elemento
+
+
+// Exemplo 2: (*p)++
+(*p)++; // Incrementa o valor apontado por p
+
+// Exemplo 3: *(p++)
+*(p++); // Usa o valor no endereço e depois incrementa p
