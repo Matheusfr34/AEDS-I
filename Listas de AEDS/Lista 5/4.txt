@@ -1,0 +1,1 @@
+O erro no programa está na linha do printf, onde está sendo usado o endereço do ponteiro duplo q ao invés do valor apontado por q (que é p) e, por último, pelo valor apontado por p (que é x).
