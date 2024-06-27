@@ -1,0 +1,15 @@
+a) valor == &valorPtr
+
+Esta afirmação é falsa. A expressão &valorPtr retorna o endereço de memória do ponteiro valorPtr. Já a variável valor contém o valor original, não o endereço de valorPtr. Portanto, valor não é igual ao endereço de valorPtr.
+
+*b) valor == valorPtr
+
+Esta afirmação é verdadeira. Se valorPtr é um ponteiro para valor, então *valorPtr desreferencia o ponteiro, ou seja, *valorPtr é o valor armazenado na variável valor. Logo, valor é igual a *valorPtr.
+
+c) valorPtr == &valor
+
+Esta afirmação é verdadeira. Se valorPtr é um ponteiro que aponta para valor, então valorPtr contém o endereço de memória da variável valor, que é o que &valor retorna. Portanto, valorPtr é igual a &valor.
+
+*d) valorPtr == valor
+
+Esta afirmação é falsa. *valor desreferencia o valor de valor, o que não faz sentido aqui, pois valor não é um ponteiro. Além disso, valorPtr é um endereço de memória, enquanto *valor tentaria acessar o valor armazenado no endereço contido em valor, o que não é aplicável já que valor não é um ponteiro.
