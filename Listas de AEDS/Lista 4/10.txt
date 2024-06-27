@@ -1,0 +1,5 @@
+No Código 1, o valor apontado por ptr é incrementado de 10 para 15 em um loop de 5 iterações, e o programa imprime 15. No Código 2, o ponteiro ptr é deslocado 5 posições na memória em um loop de 5 iterações, e o programa imprime o novo endereço de memória resultante, que depende do valor inicial de ptr e do tamanho do tipo int na plataforma específica.
+
+
+
+
