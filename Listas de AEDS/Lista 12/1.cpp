@@ -1,5 +1,7 @@
 #include <iostream>
 #include <stdexcept>
+#include <ctime>
+#include <iomanip>
 
 class Data {
 protected:
@@ -7,69 +9,102 @@ protected:
     int mes;
     int dia;
 
-    bool validarData(int ano, int mes, int dia) {
-        if (ano < 1) return false;  // Ano inválido
-        if (mes < 1 || mes > 12) return false;  // Mês inválido
-
-        // Dias por mês considerando anos bissextos
-        int diasPorMes[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-
-        // Ajusta fevereiro para anos bissextos
-        if ((ano % 4 == 0 && ano % 100 != 0) || (ano % 400 == 0)) {
-            diasPorMes[1] = 29;
+    bool dataValida(int a, int m, int d) {
+        if (m < 1 || m > 12) return false;
+        if (d < 1 || d > 31) return false;
+        
+        if (m == 2) {
+            bool bissexto = (a % 4 == 0 && a % 100 != 0) || (a % 400 == 0);
+            if (bissexto) return d <= 29;
+            else return d <= 28;
         }
-
-        if (dia < 1 || dia > diasPorMes[mes - 1]) return false;  // Dia inválido
-
+        
+        if (m == 4 || m == 6 || m == 9 || m == 11) return d <= 30;
+        
         return true;
     }
 
 public:
-    Data(int ano, int mes, int dia) {
-        if (!validarData(ano, mes, dia)) {
+    Data(int a, int m, int d) {
+        if (!dataValida(a, m, d)) {
             throw std::invalid_argument("Data inválida");
         }
-        this->ano = ano;
-        this->mes = mes;
-        this->dia = dia;
+        ano = a;
+        mes = m;
+        dia = d;
     }
 
-    int getAno() const { return this->ano; }
-    int getMes() const { return this->mes; }
-    int getDia() const { return this->dia; }
+    int getAno() const { return ano; }
+    int getMes() const { return mes; }
+    int getDia() const { return dia; }
 
-    void setAno(int ano) {
-        if (!validarData(ano, this->mes, this->dia)) {
-            throw std::invalid_argument("Ano inválido");
-        }
-        this->ano = ano;
+    void adicionarDias(int dias) {
+        struct tm data = {0};
+        data.tm_year = ano - 1900;
+        data.tm_mon = mes - 1;
+        data.tm_mday = dia + dias;
+
+        mktime(&data);
+
+        ano = data.tm_year + 1900;
+        mes = data.tm_mon + 1;
+        dia = data.tm_mday;
     }
 
-    void setMes(int mes) {
-        if (!validarData(this->ano, mes, this->dia)) {
-            throw std::invalid_argument("Mês inválido");
-        }
-        this->mes = mes;
+    Data operator+(int dias) const {
+        Data novaData(ano, mes, dia);
+        novaData.adicionarDias(dias);
+        return novaData;
     }
 
-    void setDia(int dia) {
-        if (!validarData(this->ano, this->mes, dia)) {
-            throw std::invalid_argument("Dia inválido");
-        }
-        this->dia = dia;
+    friend std::ostream& operator<<(std::ostream& os, const Data& data) {
+        os << std::setw(2) << std::setfill('0') << data.dia << "/"
+           << std::setw(2) << std::setfill('0') << data.mes << "/"
+           << data.ano;
+        return os;
     }
 
-    void printData() const {
-        std::cout << this->ano << "-" << (this->mes < 10 ? "0" : "") << this->mes << "-" << (this->dia < 10 ? "0" : "") << this->dia << std::endl;
+    int diferencaDias(const Data& outra) const {
+        struct tm data1 = {0};
+        struct tm data2 = {0};
+        
+        data1.tm_year = ano - 1900;
+        data1.tm_mon = mes - 1;
+        data1.tm_mday = dia;
+        
+        data2.tm_year = outra.ano - 1900;
+        data2.tm_mon = outra.mes - 1;
+        data2.tm_mday = outra.dia;
+        
+        time_t tempo1 = mktime(&data1);
+        time_t tempo2 = mktime(&data2);
+        
+        double diferenca = difftime(tempo1, tempo2) / (60 * 60 * 24);
+        return std::abs(static_cast<int>(diferenca));
+    }
+
+    int operator-(const Data& outra) const {
+        return diferencaDias(outra);
     }
 };
 
+// Exemplo de uso
 int main() {
     try {
-        Data data(2024, 6, 28);
-        data.printData();
-    } catch (std::invalid_argument& e) {
-        std::cerr << e.what() << std::endl;
+        Data data1(2023, 6, 30);
+        Data data2(2023, 1, 1);
+
+        std::cout << "Data 1: " << data1 << std::endl;
+        std::cout << "Data 2: " << data2 << std::endl;
+
+        Data novaData = data1 + 10;
+        std::cout << "Data 1 + 10 dias: " << novaData << std::endl;
+
+        int diferenca = data1 - data2;
+        std::cout << "Diferença em dias entre Data 1 e Data 2: " << diferenca << " dias" << std::endl;
+    } catch (const std::exception& e) {
+        std::cerr << "Erro: " << e.what() << std::endl;
     }
+
     return 0;
 }
