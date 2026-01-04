@@ -1,17 +1,17 @@
-# 💻 AEDS I
+# AEDS I
 Repositório criado para auxiliar na disciplina de Algoritmos e Estrutura de Dados I, na Pontifícia Universidade Católica de Minas Gerais. A disciplina foi cursada em 2024.1, com o professor Gustavo Borges. 
 
-## 📚 Provas
+## Provas
 Pasta com o enunciado das provas passadas.
 
-## 📝 Listas
+## Listas
 Pasta com a resolução das listas passadas em sala de aula.
 
 ---
 
-## ▶️ Como executar os códigos
+## Como executar os códigos
 
-### ✅ Rodar códigos em **C** pelo terminal
+### Rodar códigos em **C** pelo terminal
 
 1. Abra o terminal e navegue até a pasta onde está o arquivo `.c`.
    
@@ -27,7 +27,7 @@ Pasta com a resolução das listas passadas em sala de aula.
    ```bash
    ./programa
    
-### ✅ Rodar códigos em C++ pelo terminal
+### Rodar códigos em C++ pelo terminal
 1. Abra o terminal e vá até a pasta onde está o arquivo `.cpp`.
    
    Exemplo:
